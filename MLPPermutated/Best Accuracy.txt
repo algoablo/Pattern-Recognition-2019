@@ -1,0 +1,5 @@
+For iterations = 1000
+For number of neurons on the hidden layer = 100
+For learning rate = 0.02
+The following accuracies are obtained for four-fold CV: [0.7022666666666667, 0.6626666666666666, 0.6490666666666667, 0.683]
+Average accuracy = 0.6743
