@@ -22,3 +22,9 @@ Epoch 7/10, Training Loss: 0.073, Training Accuracy: 97.000, Testing Loss: 0.001
 Epoch 8/10, Training Loss: 0.067, Training Accuracy: 98.000, Testing Loss: 0.001, Testing Acc: 98.000
 Epoch 9/10, Training Loss: 0.061, Training Accuracy: 98.000, Testing Loss: 0.001, Testing Acc: 98.000
 Epoch 10/10, Training Loss: 0.058, Training Accuracy: 98.000, Testing Loss: 0.001, Testing Acc: 98.000
+
+
+Output understanding: 
+As the training loss is the average of losses over each batch of training data. Because the model changes over time the loss of the first batches is higher than of the last batches. Whereas on the the Testing Loss for an epoch is computed using the model as it is at the end of the epoch which results in a lower loss. 
+Why CNN higher accuracy than PCNN:
+This is due to the low Training Accuracy in CNN Permutated MNIST which comes from the more challenging sequence of the pictures which are permuted at random. 
