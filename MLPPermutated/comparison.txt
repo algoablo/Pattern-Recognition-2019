@@ -1,0 +1,9 @@
+
+MLP (MNIST):
+Best accuracy: 0.9208 
+Iterations: 800   Neurons: 100  Learning rate: 0.02
+MLP (PermutatedMNIST):
+Best accuracy: 0.6743 
+Iterations: 1000   Neurons: 100  Learning rate: 0.02
+
+
