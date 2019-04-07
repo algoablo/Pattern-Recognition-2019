@@ -19,13 +19,13 @@ Best accuracy obtained with the following parameters:
 **Green plot is the accuracy on the training set and the orange one is on the validation set.**
 
 First iteration
-![Alt text](./1_fold.PNG)
+![alt text](https://github.com/algoablo/Pattern-Recognition-2019/blob/master/MLPPermutated/1_Fold.png)
 
 Second iteration
-![Alt text](./2_fold.PNG)
+![Alt text](https://github.com/algoablo/Pattern-Recognition-2019/blob/master/MLPPermutated/2_Fold.png)
 
 Third iteration
-![Alt text](./3_fold.PNG)
+![Alt text](https://github.com/algoablo/Pattern-Recognition-2019/blob/master/MLPPermutated/3_Fold.png)
 
 Fourth iteration
-![Alt text](./4_fold.PNG)
+![Alt text](https://github.com/algoablo/Pattern-Recognition-2019/blob/master/MLPPermutated/4_Fold.png)
