@@ -1,5 +1,5 @@
 # Multilayer perceptron (PermutatedMNIST)
-## (Task 2b)
+## (Task 2d)
 
 ### Overview
 
