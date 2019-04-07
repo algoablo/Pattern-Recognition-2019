@@ -8,7 +8,7 @@ then it will perform cross validation on training data. Otherwise, it will run o
     svm.py 
     
 ## Results
-You can see the results on github.
+You can see the output on svm.ipynb.
 
 
 ## Conclusions
