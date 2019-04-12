@@ -29,14 +29,33 @@ def is_number(element):
         return False
 
 
+def store_image(test, image_id, img):
+    path = "preprocessed_images/" + ("valid/" if test else "train/") + image_id + ".jpg"
+    cv2.imwrite(path, img)
+
+
+def binarize_image(original_image, processed_image, polygon_pnts, y_min, y_max, x_min, x_max):
+    # Create mask of the same size as the original image with white pixels
+    mask = np.zeros(original_image.shape, dtype=np.uint8)
+    region_of_interest_pnts = np.array([polygon_pnts], dtype=np.int32)
+    # Fill the black mask with white pixels in the region of interest
+    cv2.fillPoly(mask, region_of_interest_pnts, 255)
+
+    # Change black pixels to white and vice-versa, and store in mask the
+    # rectangular shape of the region of the interest
+    mask = cv2.bitwise_not(mask[y_min:y_max, x_min:x_max])
+
+    binarized_image = cv2.bitwise_or(mask, processed_image)
+    return binarized_image
+
+
 def crop_images(test=False):
     # Handle training images images
     train_images = read_images(test)
     for image_number, image in train_images.items():
+        image = cv2.adaptiveThreshold(image, 255, 1, cv2.THRESH_BINARY, 91, 30)
         xml_content = read_svg_file(image_number)
         root = ET.fromstring(xml_content)
-        height = image.shape[0]
-        width = image.shape[1]
         for child in root:
             attributes = child.attrib
             # Here will be stored as list the content of the attribute 'd'
@@ -68,12 +87,9 @@ def crop_images(test=False):
             y_max = int(max(y))
             img = image[y_min:y_max, x_min:x_max]
             image_id = attributes['id']
-            path = "preprocessed_images/" + ("valid/" if test else "train/") + image_id + ".jpg"
-            cv2.imwrite(path, img)
-            # Remove comments from the following lines
-            # if you want to show the cropped images.
-            # cv2.imshow('', img)
-            # cv2.waitKey(0)
+
+            binarized_image = binarize_image(image, img, polygon, y_min, y_max, x_min, x_max)
+            store_image(test, image_id, binarized_image)
 
 
 def main():
