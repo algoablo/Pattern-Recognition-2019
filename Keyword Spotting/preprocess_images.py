@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import xml.etree.ElementTree as ET
+import os
 
 
 def read_images(test=True):
@@ -49,6 +50,15 @@ def binarize_image(original_image, processed_image, polygon_pnts, y_min, y_max, 
     return binarized_image
 
 
+def create_folder(folder):
+    try:
+        os.mkdir(folder)
+    except:
+        print('Could not create folder: {folder}. If the folder was already there, fine otherwise most'
+              ' probably won\'t work!'.format(folder=folder))
+        pass
+
+
 def crop_images(test=False):
     # Handle training images images
     train_images = read_images(test)
@@ -93,6 +103,9 @@ def crop_images(test=False):
 
 
 def main():
+    create_folder("preprocessed_images")
+    create_folder("preprocessed_images/train")
+    create_folder("preprocessed_images/valid")
     crop_images()
     crop_images(test=True)
 
