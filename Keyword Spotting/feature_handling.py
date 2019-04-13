@@ -1,6 +1,7 @@
 import os
 import cv2
 import csv
+import numpy as np
 
 
 def read_processed_image(test=False):
@@ -85,15 +86,30 @@ def process_features(test=False):
     return feature_set
 
 
+def normalize(data):
+    # Remove the first column from return data.
+    data = np.array(data)
+    numbers = np.array(((np.array(data))[:, 1:]), dtype=int)
+    mean = np.mean(numbers)
+    std = np.std(numbers)
+    numbers = numbers - mean
+    numbers = numbers / std
+    data[:, 1:] = numbers
+    return data
+
+
 def main():
     print('Handling training data.')
     train_features = process_features(test=False)
+    train_features = normalize(train_features)
     write_features(train_features, test=False)
-    print('-----------------------')
+    print('--------Finished--------')
+
     print('Handling validation data')
     test_features = process_features(test=True)
+    test_features = normalize(test_features)
     write_features(test_features, test=True)
-    print('------------------------')
+    print('--------Finished--------')
 
 
 if __name__ == '__main__':
