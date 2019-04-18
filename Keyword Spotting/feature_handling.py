@@ -86,12 +86,17 @@ def process_features(test=False):
     return feature_set
 
 
-def normalize(data):
-    # Remove the first column from return data.
+def normalization_parameters(data):
     data = np.array(data)
     numbers = np.array(((np.array(data))[:, 1:]), dtype=int)
     mean = np.mean(numbers)
     std = np.std(numbers)
+    return mean, std
+
+
+def normalize(data, mean, std):
+    data = np.array(data)
+    numbers = np.array(((np.array(data))[:, 1:]), dtype=int)
     numbers = numbers - mean
     numbers = numbers / std
     data[:, 1:] = numbers
@@ -101,13 +106,14 @@ def normalize(data):
 def main():
     print('Handling training data.')
     train_features = process_features(test=False)
-    train_features = normalize(train_features)
+    mean, std = normalization_parameters(train_features)
+    train_features = normalize(train_features, mean, std)
     write_features(train_features, test=False)
     print('--------Finished--------')
 
     print('Handling validation data')
     test_features = process_features(test=True)
-    test_features = normalize(test_features)
+    test_features = normalize(test_features, mean, std)
     write_features(test_features, test=True)
     print('--------Finished--------')
 
