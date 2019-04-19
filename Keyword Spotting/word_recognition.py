@@ -57,6 +57,18 @@ def calculate_dwt(test_feature, training_features):
     return distance
 
 
+def write_res(result):
+    path = "result.txt"
+    file = open(path, "w+")
+    for word, res in result.items():
+        file_content = word + ":"
+        for t, k in res:
+            file_content = file_content + "(" + str(t) + ", " + str(k) + "), "
+        file_content = file_content + "\n"
+        file.write(file_content)
+    file.close()
+
+
 def main():
     start_time = time.time()
     training_features = read_features()
@@ -79,7 +91,11 @@ def main():
         threads.close()
         result[word] = sorted(result[word].items(), key=lambda kv: (kv[1], kv[0]))
     end_time = time.time()
+    print(result)
     print(end_time - start_time)
+    print('Finished recognition.')
+    print('Writing result to file result.txt')
+    write_res(result)
 
 
 if __name__ == '__main__':
