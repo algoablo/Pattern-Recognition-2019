@@ -78,6 +78,7 @@ def process_features(test=False):
             current_window = scaled_image[:, i]
             # Get the features from this column
             lower_contour, upper_contour, b_w_transitions, black_pixels = extract_features(current_window)
+            features.append(image.shape[1] / image.shape[0])
             features.append(lower_contour)
             features.append(upper_contour)
             features.append(b_w_transitions)
@@ -88,7 +89,7 @@ def process_features(test=False):
 
 def normalization_parameters(data):
     data = np.array(data)
-    numbers = np.array(((np.array(data))[:, 1:]), dtype=int)
+    numbers = np.array(((np.array(data))[:, 1:]), dtype=float)
     mean = np.mean(numbers)
     std = np.std(numbers)
     return mean, std
@@ -96,7 +97,7 @@ def normalization_parameters(data):
 
 def normalize(data, mean, std):
     data = np.array(data)
-    numbers = np.array(((np.array(data))[:, 1:]), dtype=int)
+    numbers = np.array(((np.array(data))[:, 1:]), dtype=float)
     numbers = numbers - mean
     numbers = numbers / std
     data[:, 1:] = numbers
