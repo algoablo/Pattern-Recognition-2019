@@ -60,12 +60,13 @@ def calculate_dwt(test_feature, training_features):
 def write_res(result):
     path = "result.txt"
     file = open(path, "w+")
+    file_content = ""
     for word, res in result.items():
-        file_content = word + ":"
+        file_content = file_content + word + ":"
         for t, k in res:
             file_content = file_content + "(" + str(t) + ", " + str(k) + "), "
         file_content = file_content + "\n"
-        file.write(file_content)
+    file.write(file_content)
     file.close()
 
 
@@ -90,6 +91,7 @@ def main():
             result[word][test_image_id] = dwt_dst
         threads.close()
         result[word] = sorted(result[word].items(), key=lambda kv: (kv[1], kv[0]))
+        print('Finished processing word = {w}'.format(w=word))
     end_time = time.time()
     print(result)
     print(end_time - start_time)
