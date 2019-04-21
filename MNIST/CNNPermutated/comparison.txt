@@ -1,0 +1,35 @@
+CNN (PermutatedMNIST):
+Start training
+Epoch 1/10, Training Loss: 1.018, Training Accuracy: 72.000, Testing Loss: 0.002, Testing Acc: 88.000
+Epoch 2/10, Training Loss: 0.413, Training Accuracy: 87.000, Testing Loss: 0.001, Testing Acc: 91.000
+Epoch 3/10, Training Loss: 0.318, Training Accuracy: 90.000, Testing Loss: 0.001, Testing Acc: 92.000
+Epoch 4/10, Training Loss: 0.266, Training Accuracy: 92.000, Testing Loss: 0.001, Testing Acc: 93.000
+Epoch 5/10, Training Loss: 0.235, Training Accuracy: 93.000, Testing Loss: 0.001, Testing Acc: 94.000
+Epoch 6/10, Training Loss: 0.211, Training Accuracy: 93.000, Testing Loss: 0.000, Testing Acc: 95.000
+Epoch 7/10, Training Loss: 0.193, Training Accuracy: 94.000, Testing Loss: 0.001, Testing Acc: 95.000
+Epoch 8/10, Training Loss: 0.178, Training Accuracy: 94.000, Testing Loss: 0.001, Testing Acc: 95.000
+Epoch 9/10, Training Loss: 0.165, Training Accuracy: 95.000, Testing Loss: 0.000, Testing Acc: 96.000
+Epoch 10/10, Training Loss: 0.156, Training Accuracy: 95.000, Testing Loss: 0.000, Testing Acc: 96.000
+CNN (MNIST):
+Start training
+Epoch 1/10, Training Loss: 0.630, Training Accuracy: 84.000, Testing Loss: 0.001, Testing Acc: 94.000
+Epoch 2/10, Training Loss: 0.176, Training Accuracy: 95.000, Testing Loss: 0.001, Testing Acc: 96.000
+Epoch 3/10, Training Loss: 0.130, Training Accuracy: 96.000, Testing Loss: 0.001, Testing Acc: 97.000
+Epoch 4/10, Training Loss: 0.107, Training Accuracy: 96.000, Testing Loss: 0.001, Testing Acc: 97.000
+Epoch 5/10, Training Loss: 0.092, Training Accuracy: 97.000, Testing Loss: 0.001, Testing Acc: 98.000
+Epoch 6/10, Training Loss: 0.081, Training Accuracy: 97.000, Testing Loss: 0.001, Testing Acc: 98.000
+Epoch 7/10, Training Loss: 0.073, Training Accuracy: 97.000, Testing Loss: 0.001, Testing Acc: 98.000
+Epoch 8/10, Training Loss: 0.067, Training Accuracy: 98.000, Testing Loss: 0.001, Testing Acc: 98.000
+Epoch 9/10, Training Loss: 0.061, Training Accuracy: 98.000, Testing Loss: 0.001, Testing Acc: 98.000
+Epoch 10/10, Training Loss: 0.058, Training Accuracy: 98.000, Testing Loss: 0.001, Testing Acc: 98.000
+
+
+Output understanding: 
+As the training loss is the average of losses over each batch of training data. 
+Because the model changes over time the loss of the first batches is higher than of the last batches. 
+Whereas on the the Testing Loss for an epoch is computed using the model as it is at the end of the epoch
+which results in a lower loss. 
+
+Why CNN has higher accuracy than PCNN:
+This is due to the low Training Accuracy in CNN Permutated MNIST which comes from 
+the more challenging sequence of the pictures which are permuted at random. 
