@@ -70,6 +70,34 @@ def write_res(result):
     file.close()
 
 
+def calculate_avg_precision(word, transcriptions, test_features, result):
+    precisions = []
+    count = 0
+    # Initially count how many time the word is in validation data / test_features.
+    for key in test_features.keys():
+        if transcriptions[key] == word:
+            count += 1
+    print(count)
+    true_positives = 0
+    false_positives = 0
+    for image_id, distance in result:
+        if true_positives == count:
+            break
+        if word == transcriptions[image_id]:
+            true_positives += 1
+        else:
+            false_positives += 1
+        precisions.append(true_positives / (true_positives + false_positives))
+    mean = np.mean(precisions) if len(precisions) > 0 else 0
+    return mean
+
+
+def is_word_in_test_features(word, test_features, transcriptions):
+    for key in test_features.keys():
+        if transcriptions[key] == word:
+            return True
+
+
 def main():
     start_time = time.time()
     training_features = read_features()
@@ -77,6 +105,7 @@ def main():
     keywords = read_keywords()
     transcriptions = read_transcription()
     result = {}
+    precisions = []
     for word in keywords:
         training_feature_sequence_vectors = []
         result[word] = {}
@@ -84,18 +113,23 @@ def main():
             if word == w:
                 if image_id in training_features.keys():
                     training_feature_sequence_vectors.append(training_features[image_id])
-        threads = Pool(len(training_feature_sequence_vectors))
-        for test_image_id, test_feature_sequence_vectors in test_features.items():
-            func = partial(calculate_dwt, test_feature_sequence_vectors)
-            dwt_dst = np.mean(threads.map(func, training_feature_sequence_vectors))
-            result[word][test_image_id] = dwt_dst
-        threads.close()
-        result[word] = sorted(result[word].items(), key=lambda kv: (kv[1], kv[0]))
-        print('Finished processing word = {w}'.format(w=word))
+        if len(training_feature_sequence_vectors) > 0 and is_word_in_test_features(word, test_features, transcriptions):
+            threads = Pool(len(training_feature_sequence_vectors))
+            for test_image_id, test_feature_sequence_vectors in test_features.items():
+                func = partial(calculate_dwt, test_feature_sequence_vectors)
+                dwt_dst = np.min(threads.map(func, training_feature_sequence_vectors))
+                result[word][test_image_id] = dwt_dst
+            threads.close()
+            # Sort the result in ascending order
+            result[word] = sorted(result[word].items(), key=lambda kv: (kv[1], kv[0]))
+            # Calculate the precision for this predicted word
+            precision = calculate_avg_precision(word, transcriptions, test_features, result[word])
+            precisions.append(precision)
+            print('Finished processing word = {w} Precision = {prcs}'.format(w=word, prcs=precision))
     end_time = time.time()
-    print(result)
     print(end_time - start_time)
     print('Finished recognition.')
+    print('Average mean precision = {prcs}'.format(prcs=np.mean(precisions)))
     print('Writing result to file result.txt')
     write_res(result)
 
