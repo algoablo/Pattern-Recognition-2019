@@ -88,23 +88,46 @@ def process_features(test=False):
 
 
 def normalization_parameters(data):
-    data = np.array(data)
-    numbers = np.array(((np.array(data))[:, 1:]), dtype=float)
-    mean = np.mean(numbers)
-    std = np.std(numbers)
+    data = np.array(((np.array(data))[:, 1:]), dtype=float)
+    means = []
+    stds = []
+    for i in range(0, len(data)):
+        temp = []
+        for j in range(0, len(data[i]), 5):
+            temp_array = []
+            temp_array.append(data[i][j])
+            temp_array.append(data[i][j + 1])
+            temp_array.append(data[i][j + 2])
+            temp_array.append(data[i][j + 3])
+            temp_array.append(data[i][j + 4])
+            temp.append(temp_array)
+        means.append(np.mean(temp, axis=0))
+        stds.append((np.mean(temp, axis=0)))
+    mean = np.mean(means, axis=0)
+    std = np.std(stds, axis=0)  # np.std([np.mean(data[n], axis=0) for n in data], axis=0)
     return mean, std
 
 
 def normalize(data, mean, std):
     data = np.array(data)
-    numbers = np.array(((np.array(data))[:, 1:]), dtype=float)
-    numbers = numbers - mean
-    numbers = numbers / std
+    numbers = np.array((data[:, 1:]), dtype=float)
+    for i in range(0, len(numbers)):
+        for j in range(0, len(numbers[i]), 5):
+            x = numbers[i][j]
+            numbers[i][j] = "{0:.5f}".format((numbers[i][j] - mean[j % 5]) / std[j % 5])
+            numbers[i][j + 1] = "{0:.5f}".format((numbers[i][j + 1] - mean[(j + 1) % 5]) / std[(j + 1) % 5])
+            numbers[i][j + 2] = "{0:.5f}".format((numbers[i][j + 2] - mean[(j + 2) % 5]) / std[(j + 2) % 5])
+            numbers[i][j + 3] = "{0:.5f}".format((numbers[i][j + 3] - mean[(j + 3) % 5]) / std[(j + 3) % 5])
+            numbers[i][j + 4] = "{0:.5f}".format((numbers[i][j + 4] - mean[(j + 4) % 5]) / std[(j + 4) % 5])
+            if i == 389 and j == 0:
+                print(numbers[i][j])
+    numbers = numbers.tolist()
     data[:, 1:] = numbers
     return data
 
 
 def main():
+    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
     print('Handling training data.')
     train_features = process_features(test=False)
     mean, std = normalization_parameters(train_features)
