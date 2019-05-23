@@ -119,8 +119,6 @@ def normalize(data, mean, std):
             numbers[i][j + 2] = "{0:.5f}".format((numbers[i][j + 2] - mean[(j + 2) % 5]) / std[(j + 2) % 5])
             numbers[i][j + 3] = "{0:.5f}".format((numbers[i][j + 3] - mean[(j + 3) % 5]) / std[(j + 3) % 5])
             numbers[i][j + 4] = "{0:.5f}".format((numbers[i][j + 4] - mean[(j + 4) % 5]) / std[(j + 4) % 5])
-            if i == 389 and j == 0:
-                print(numbers[i][j])
     numbers = numbers.tolist()
     data[:, 1:] = numbers
     return data
