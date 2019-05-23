@@ -62,9 +62,10 @@ def write_res(result):
     file = open(path, "w+")
     file_content = ""
     for word, res in result.items():
-        file_content = file_content + word + ":"
+        file_content = file_content + word + ", "
         for t, k in res:
-            file_content = file_content + "(" + str(t) + ", " + str(k) + "), "
+            file_content = file_content + str(t) + ", " + str(k) + ", "
+        file_content = file_content[:-2]
         file_content = file_content + "\n"
     file.write(file_content)
     file.close()
@@ -113,7 +114,7 @@ def main():
             if word == w:
                 if image_id in training_features.keys():
                     training_feature_sequence_vectors.append(training_features[image_id])
-        if len(training_feature_sequence_vectors) > 0 and is_word_in_test_features(word, test_features, transcriptions):
+        if len(training_feature_sequence_vectors) > 0:
             threads = Pool(len(training_feature_sequence_vectors))
             for test_image_id, test_feature_sequence_vectors in test_features.items():
                 func = partial(calculate_dwt, test_feature_sequence_vectors)
@@ -123,13 +124,13 @@ def main():
             # Sort the result in ascending order
             result[word] = sorted(result[word].items(), key=lambda kv: (kv[1], kv[0]))
             # Calculate the precision for this predicted word
-            precision = calculate_avg_precision(word, transcriptions, test_features, result[word])
-            precisions.append(precision)
-            print('Finished processing word = {w} Precision = {prcs}'.format(w=word, prcs=precision))
+            # precision = calculate_avg_precision(word, transcriptions, test_features, result[word])
+            # precisions.append(precision)
+            print('Finished processing word = {w}'.format(w=word))
     end_time = time.time()
     print(end_time - start_time)
     print('Finished recognition.')
-    print('Average mean precision = {prcs}'.format(prcs=np.mean(precisions)))
+    # print('Average mean precision = {prcs}'.format(prcs=np.mean(precisions)))
     print('Writing result to file result.txt')
     write_res(result)
 
